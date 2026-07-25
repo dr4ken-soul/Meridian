@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { getPromptBlobHash, getPromptPath } from '../lib/git.js'
+import { getPromptBlobHash, getPromptPath } from '../lib/lib/git.js'
 
 test('resolves the configured prompt and returns a git blob hash', () => {
   const promptPath = getPromptPath()
