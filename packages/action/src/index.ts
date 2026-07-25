@@ -13,7 +13,9 @@ export async function run(): Promise<void> {
   const replayCommand = process.env.MERIDIAN_REPLAY_COMMAND
   if (!replayCommand) throw new Error('Set MERIDIAN_REPLAY_COMMAND to the command that runs your agent and prints the replay trace ID.')
   const { execFileSync } = await import('node:child_process')
-  const output = execFileSync(process.env.ComSpec ?? 'cmd.exe', ['/d', '/s', '/c', replayCommand], { encoding: 'utf8' }).trim()
+  const shell = process.platform === 'win32' ? (process.env.ComSpec ?? 'cmd.exe') : '/bin/sh'
+  const shellArgs = process.platform === 'win32' ? ['/d', '/s', '/c', replayCommand] : ['-lc', replayCommand]
+  const output = execFileSync(shell, shellArgs, { encoding: 'utf8' }).trim()
   const replayTraceId = output.split(/\s+/).pop()
   if (!replayTraceId) throw new Error('MERIDIAN_REPLAY_COMMAND did not return a replay trace ID.')
   const diff = await diffTraces(baseline.traceId, replayTraceId); await postOrUpdateComment(diff, replayTraceId)
