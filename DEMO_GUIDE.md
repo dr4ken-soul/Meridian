@@ -15,6 +15,19 @@ This guide is for a clean screen recording. Do not use voiceover, subtitles, cap
 9. Show the GitHub pull request comment
 10. Record the final video
 
+## Progress checklist
+
+- [x] 1. Install dependencies
+- [x] 2. Build the Action
+- [x] 3. Build the landing page
+- [x] 4. Run the automated test
+- [x] 5. Push the repository to GitHub
+- [ ] 6. Create and validate the SigNoz service account key
+- [ ] 7. Capture and store a real baseline trace
+- [ ] 8. Create and compare a replay trace
+- [ ] 9. Show the GitHub pull request comment
+- [ ] 10. Record the final demo
+
 Do not record the final demo until the build and test commands pass.
 
 ## 1. Install, build, and test
@@ -81,27 +94,117 @@ Check the hero, PR comment card, mechanism section, SigNoz section, final call t
 
 ## 4. Configure SigNoz
 
-Set these values in the same PowerShell window:
+This section is the exact setup sequence. You need two things from SigNoz:
 
-```powershell
-$env:SIGNOZ_URL="https://your-signoz-instance"
-$env:SIGNOZ_API_KEY="your-service-account-key"
-$env:MERIDIAN_PROMPT_PATH="prompts/example.txt"
+1. The URL of your SigNoz workspace, used by Meridian to query traces
+2. A SigNoz service account API key, used by Meridian in the `SIGNOZ-API-KEY` header
+
+Do not confuse this API key with a SigNoz ingestion key. The ingestion key is used by your agent or OpenTelemetry collector to send telemetry. Meridian's service account API key is used to read the telemetry back.
+
+### 4.1 Open your SigNoz workspace
+
+Open the URL for your SigNoz Cloud workspace or your self-hosted SigNoz instance and sign in.
+
+The official service account instructions are here:
+
+https://signoz.io/docs/manage/administrator-guide/iam/service-accounts/
+
+If you are using SigNoz Cloud, your workspace URL normally looks like:
+
+```text
+https://YOUR_WORKSPACE.REGION.signoz.cloud
 ```
 
-Never record the API key.
+Use the URL you already use to open the SigNoz dashboard. Do not add `/api` or `/trace` to the value of `SIGNOZ_URL`.
 
-Check the connection:
+### 4.2 Create a service account
+
+In the SigNoz web application:
+
+1. Click **Settings** in the left navigation or workspace menu.
+2. Click **Service Accounts**.
+3. Click **New Service Account**.
+4. Enter a name using lowercase letters, numbers, and hyphens, for example `meridian-demo`.
+5. Click **Create**.
+6. Click the new `meridian-demo` service account.
+7. Open the **Overview** tab.
+8. Use the **Roles** dropdown to assign a role that can read traces. A read-only viewer role is preferred for a demo.
+9. Click **Save**.
+
+If **Service Accounts** or **Roles** is unavailable, your SigNoz user does not have the required admin permission. Ask the workspace administrator to create the account and key for you.
+
+### 4.3 Generate and copy the API key
+
+While viewing the service account:
+
+1. Click the **Keys** tab.
+2. Click **Add Key**.
+3. Name it `meridian-demo-key`.
+4. Leave the expiration enabled if you only need the key for the hackathon.
+5. Click **Create**.
+6. Copy the key immediately.
+
+SigNoz shows the key value only once. Store it temporarily in a password manager or secure note. Never put it in the repository and never show it in the recording.
+
+### 4.4 Validate the key before configuring Meridian
+
+In PowerShell, replace both placeholders and run:
+
+```powershell
+$signozUrl = "https://YOUR_WORKSPACE.REGION.signoz.cloud"
+$signozApiKey = "PASTE_THE_SERVICE_ACCOUNT_KEY_HERE"
+
+Invoke-RestMethod `
+  -Method Get `
+  -Uri "$signozUrl/api/v1/service_accounts/me" `
+  -Headers @{ "SIGNOZ-API-KEY" = $signozApiKey }
+```
+
+If the command returns service account information, the key works. If it returns `401`, create a new key or copy the existing key again. If it cannot connect, check the workspace URL.
+
+### 4.5 Set Meridian's environment variables
+
+In the same PowerShell window:
+
+```powershell
+$env:SIGNOZ_URL = $signozUrl
+$env:SIGNOZ_API_KEY = $signozApiKey
+$env:MERIDIAN_PROMPT_PATH = "prompts/example.txt"
+```
+
+Check Meridian's connection:
 
 ```powershell
 npm --workspace packages/action exec meridian -- status
 ```
 
-Expected output:
+The expected output is:
 
 ```text
 SigNoz is reachable.
 ```
+
+These environment variables last only for the current PowerShell window. If you open a new window, set them again.
+
+### 4.6 Find a trace in SigNoz
+
+In the SigNoz web application:
+
+1. Click **Traces** in the left navigation.
+2. Set the time range to **Last 15 minutes** or **Last 1 hour**.
+3. Use the service or operation filters if there are many traces.
+4. Click a trace row to open its details.
+5. Copy the **Trace ID** shown in the trace details panel.
+
+The official Trace Explorer guide is here:
+
+https://signoz.io/docs/userguide/traces/
+
+The Trace Explorer can also search directly by a specific Trace ID. The official query guide is here:
+
+https://signoz.io/docs/apm-and-distributed-tracing/querying-traces/
+
+If no traces appear, first run the instrumented agent and wait for the normal OpenTelemetry ingestion delay. Confirm that the agent is sending telemetry to the correct SigNoz ingestion endpoint and that its service appears under **Services**.
 
 ## 5. Capture a baseline
 
