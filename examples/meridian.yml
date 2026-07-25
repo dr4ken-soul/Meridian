@@ -1,0 +1,17 @@
+name: Meridian
+on:
+  pull_request:
+    paths:
+      - prompts/**
+jobs:
+  regression-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: meridian-dev/meridian@v1
+        env:
+          MERIDIAN_REPLAY_COMMAND: node scripts/replay-agent.js
+        with:
+          signoz-url: ${{ secrets.SIGNOZ_URL }}
+          signoz-api-key: ${{ secrets.SIGNOZ_API_KEY }}
+          prompt-path: prompts/example.txt

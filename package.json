@@ -1,0 +1,11 @@
+{
+  "name": "meridian",
+  "private": true,
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "build:action": "npm run build --workspace=packages/action",
+    "build:landing": "npm run build --workspace=packages/landing",
+    "dev:landing": "npm run dev --workspace=packages/landing",
+    "test": "npm run test --workspace=packages/action"
+  }
+}

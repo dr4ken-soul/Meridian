@@ -1,0 +1,16 @@
+name: Meridian Prompt Regression Gate
+description: Replays golden traces against prompt changes and posts a SigNoz-backed regression diff to the pull request.
+inputs:
+  signoz-url:
+    description: Base URL of the SigNoz instance
+    required: true
+  signoz-api-key:
+    description: SigNoz service account API key
+    required: true
+  prompt-path:
+    description: Path to watch for prompt changes
+    required: false
+    default: prompts/
+runs:
+  using: node20
+  main: packages/action/dist/index.js
