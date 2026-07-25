@@ -2,5 +2,9 @@ node_modules/
 dist/
 !packages/action/dist/
 !packages/action/dist/**
+packages/action/lib/
+*.tsbuildinfo
+packages/landing/vite.config.js
+packages/landing/vite.config.d.ts
 .env
 packages/landing/.vite/
