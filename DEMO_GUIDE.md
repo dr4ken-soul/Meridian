@@ -22,7 +22,7 @@ This guide is for a clean screen recording. Do not use voiceover, subtitles, cap
 - [x] 3. Build the landing page
 - [x] 4. Run the automated test
 - [x] 5. Push the repository to GitHub
-- [ ] 6. Create and validate the SigNoz service account key
+- [ ] 6. Create and validate the SigNoz service account key (blocked by SigNoz signup review)
 - [ ] 7. Capture and store a real baseline trace
 - [ ] 8. Create and compare a replay trace
 - [ ] 9. Show the GitHub pull request comment
@@ -93,6 +93,32 @@ Open the Vite URL, normally `http://localhost:5173`.
 Check the hero, PR comment card, mechanism section, SigNoz section, final call to action, and mobile layout.
 
 ## 4. Configure SigNoz
+
+### Current signup issue
+
+If SigNoz shows the message **We're getting a high volume of sign-ups from personal addresses** and asks for a company email, this is a SigNoz Cloud signup restriction. It is not a Meridian error.
+
+Choose one of these routes:
+
+1. If you have access to a work, school, startup, or organisation email, use that address and continue with SigNoz Cloud.
+2. If you do not have one, click **Contact cloud support** on the signup page or email `cloud-support@signoz.io` and explain that you are joining the Agents of SigNoz hackathon and need a temporary evaluation workspace.
+3. If you need to continue immediately without waiting for Cloud support, use the self-hosted route below.
+
+Do not keep retrying the same personal email. The screenshot indicates that the signup is being held by their traffic policy.
+
+### Self-hosted fallback for Windows
+
+The official self-hosted guide says Windows users should run SigNoz inside WSL 2 with Docker Engine, not Docker Desktop, because ClickHouse Keeper can restart under Docker Desktop's virtualization layer:
+
+https://signoz.io/docs/install/docker/
+
+This route requires WSL 2, Docker Engine inside WSL, at least 4 GB allocated memory, and open ports 8080, 4317, and 4318. After installation, open:
+
+```text
+http://localhost:8080
+```
+
+Use `http://localhost:8080` as `SIGNOZ_URL` for local CLI testing. A local SigNoz instance cannot be reached by a GitHub-hosted Action unless you expose it securely through a public HTTPS endpoint, so Cloud support is the simpler route for the full GitHub demo.
 
 This section is the exact setup sequence. You need two things from SigNoz:
 
