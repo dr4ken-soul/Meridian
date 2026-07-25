@@ -30,7 +30,11 @@ This guide is for a clean screen recording. Do not use voiceover, subtitles, cap
 
 ### Local setup status
 
-WSL 2 is enabled on the Windows machine, but no Linux distribution is installed yet and Docker is not installed. The automated `wsl --install` download timed out. Complete the one-time Ubuntu installation below, then continue with Docker.
+WSL 2 is enabled and Ubuntu 24.04.1 LTS is now installed as a WSL 2 distribution. Docker is not installed yet. Use the Ubuntu terminal for the remaining local SigNoz setup.
+
+- [x] Ubuntu installed in WSL 2
+- [ ] Docker Engine installed inside Ubuntu
+- [ ] SigNoz started at `http://localhost:8080`
 
 Do not record the final demo until the build and test commands pass.
 
