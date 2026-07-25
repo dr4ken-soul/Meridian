@@ -28,6 +28,10 @@ This guide is for a clean screen recording. Do not use voiceover, subtitles, cap
 - [ ] 9. Show the GitHub pull request comment
 - [ ] 10. Record the final demo
 
+### Local setup status
+
+WSL 2 is enabled on the Windows machine, but no Linux distribution is installed yet and Docker is not installed. The automated `wsl --install` download timed out. Complete the one-time Ubuntu installation below, then continue with Docker.
+
 Do not record the final demo until the build and test commands pass.
 
 ## 1. Install, build, and test
@@ -119,6 +123,38 @@ http://localhost:8080
 ```
 
 Use `http://localhost:8080` as `SIGNOZ_URL` for local CLI testing. A local SigNoz instance cannot be reached by a GitHub-hosted Action unless you expose it securely through a public HTTPS endpoint, so Cloud support is the simpler route for the full GitHub demo.
+
+### One-time Windows action required now
+
+Because the distro download is interactive and needs Windows access, do this on the machine:
+
+1. Open **Microsoft Store**.
+2. Search for **Ubuntu**.
+3. Install the current Ubuntu application.
+4. Open **Ubuntu** from the Start menu.
+5. Wait for it to finish initialising.
+6. Create a Linux username and password when prompted.
+7. Close Ubuntu.
+8. Open PowerShell and run:
+
+```powershell
+wsl --set-default-version 2
+wsl --list --verbose
+```
+
+The Ubuntu row should show version `2`. If it shows version `1`, run:
+
+```powershell
+wsl --set-version Ubuntu 2
+```
+
+Then open Ubuntu again. Once you reach the Linux prompt, tell Codex:
+
+```text
+Ubuntu is installed in WSL 2 and I can open its terminal.
+```
+
+At that point the remaining Docker Engine and SigNoz commands can be run from the Ubuntu terminal.
 
 This section is the exact setup sequence. You need two things from SigNoz:
 
