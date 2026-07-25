@@ -381,3 +381,76 @@ Use this shorter real-data recording:
 7. Pull request comment if available
 
 Do not fabricate trace IDs or diff values.
+
+## 11. Fast silent demo recording addendum
+
+This section is an additional fallback guide. It does not replace the full SigNoz workflow above.
+
+### What the honest fallback demo proves
+
+If a real SigNoz workspace is not available before submission, the recording should prove the parts that are verified locally:
+
+1. Meridian's landing page explains the product and workflow.
+2. The public GitHub repository contains the Action, CLI, example workflow, and documentation.
+3. The Action package builds successfully.
+4. The landing page builds successfully.
+5. The automated smoke test passes.
+
+Do not show made-up trace IDs, fake SigNoz results, or claim that a live regression comparison succeeded if it has not been run.
+
+### Prepare the screens
+
+Open these before recording:
+
+1. The deployed Vercel landing page.
+2. `https://github.com/dr4ken-soul/Meridian`.
+3. PowerShell in the Meridian repository.
+4. A code editor showing `action.yml` or `examples/meridian.yml`.
+
+Close tabs and windows containing passwords, API keys, tokens, personal email addresses, or unrelated private information.
+
+### Exact recording sequence
+
+Keep the recording between two and three minutes. Do not speak, add captions, add subtitles, or add editing overlays.
+
+1. Start on the deployed landing page.
+2. Slowly scroll through the hero, PR regression card, mechanism section, SigNoz section, and final call to action.
+3. Open the GitHub repository and briefly show the repository structure.
+4. Open `action.yml` and show that Meridian is packaged as a GitHub Action.
+5. Open `examples/meridian.yml` and show the example workflow configuration.
+6. Switch to PowerShell and run:
+
+```powershell
+npm test
+```
+
+7. Leave the passing test output visible for several seconds.
+8. Run:
+
+```powershell
+npm run build:action
+npm run build:landing
+```
+
+9. Leave the successful build output visible for several seconds.
+10. Return to the landing page and finish on the Meridian product screen.
+
+The visible website, source files, and successful terminal output are the explanation. Nothing else needs to be placed over the video.
+
+### Recording with Windows Game Bar
+
+1. Focus the browser or terminal window.
+2. Press `Win + G`.
+3. Open the **Capture** panel.
+4. Click the record button, or press `Win + Alt + R`.
+5. Perform the sequence above.
+6. Press `Win + Alt + R` again to stop.
+7. Open the recorded file from the Game Bar notification.
+
+Watch the recording once before uploading it. Confirm that the text is readable and no secrets are visible.
+
+### Remotion or Hyperframe
+
+Remotion or Hyperframe can produce a more polished edited video, but they require additional setup, rendering, and video review. They are optional and should only be used if already installed and familiar.
+
+For this submission, a clean direct screen recording is safer. Do not delay the submission to install a video framework.
