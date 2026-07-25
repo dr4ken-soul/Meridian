@@ -30,11 +30,13 @@ This guide is for a clean screen recording. Do not use voiceover, subtitles, cap
 
 ### Local setup status
 
-WSL 2 is enabled and Ubuntu 24.04.1 LTS is now installed as a WSL 2 distribution. Docker is not installed yet. Use the Ubuntu terminal for the remaining local SigNoz setup.
+WSL 2 is enabled and Ubuntu 24.04.1 LTS is installed as a WSL 2 distribution. Docker Engine and Docker Compose are installed. On this machine, the Docker daemon cannot use the required WSL iptables/NAT rules, so the local SigNoz containers have not been started yet.
 
 - [x] Ubuntu installed in WSL 2
-- [ ] Docker Engine installed inside Ubuntu
+- [x] Docker Engine and Docker Compose installed inside Ubuntu
 - [ ] SigNoz started at `http://localhost:8080`
+
+The Docker packages are complete, but the daemon still needs a working Linux networking layer. If `dockerd` reports an iptables/NAT error, use Docker Desktop for Windows or a Linux machine/VM for the local SigNoz route. Do not mark SigNoz complete until `http://localhost:8080` actually opens.
 
 Do not record the final demo until the build and test commands pass.
 
